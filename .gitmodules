@@ -1,0 +1,3 @@
+[submodule "Ecommerce-App"]
+	path = Ecommerce-App
+	url = https://github.com/bhaskarpandey1234/Ecommerce-App.git
