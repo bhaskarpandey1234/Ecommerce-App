@@ -1,0 +1,37 @@
+version: '3.3' 
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      # Use Docker Toolbox VM IP address instead of 'mongo'
+      - MONGO_URI=mongodb://192.168.99.100:27017/shopease
+      - JWT_SECRET=051428553ba7cb9bb67d0146e12c41e0bf845f2a8a9f98bab9aa16f1c799e1215e1d34d2d11f9f3b647c566234179e76e9b7f3202ee37cee329383ad7eeeaf36
+    depends_on:
+      - mongo
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
